@@ -63,6 +63,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             clear_oneshot_locked_mods();
             clear_oneshot_mods();
             reset_oneshot_layer();
+            clear_mods();
             // always move to base layer
             layer_move(BASE_L);
             if (!cleared_state)
