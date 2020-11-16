@@ -22,7 +22,7 @@ enum layers {
     LAYOUT( \
       KC_TAB,   K01,   K02,   K03,     K04,     K05,                                          K06,     K07,    K08,    K09,    K0A,   KC_PIPE, \
       MY_ESC,   K11,   K12,   K13,_LST(K14),    K15,                                          K16,_RST(K17),   K18,    K19,    K1A,   KC_QUOT, \
-      KC_LSFT,  K21,   K22,   K23,     K24,     K25,     KC_LSFT, _______, _______, KC_TAB,   K26,     K27,    K28,    K29,    K2A,   KC_RSFT, \
+      KC_LSFT,  K21,   K22,   K23,     K24,     K25,     KC_LEAD, _______, _______, KC_LEAD,  K26,     K27,    K28,    K29,    K2A,   KC_RSFT, \
                               KC_LGUI, KC_LGUI, MY_LALT, KTHMB,   MY_ENT,  MY_BSPC, MY_SPC,   MY_RCTL, KC_TAB, KC_RALT \
     )
 
@@ -37,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |NAV/ESC |   R  |   S  |   T  |   H  |   D  |                              |   M  |   N  |   A  |   I  |   O  |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift | /  ? |   V  |   G  |   P  |   B  |LShift|      |  |      |LShift|   X  |   W  | .  > | ;  : |   Q  | RShift |
+ * | LShift | /  ? |   V  |   G  |   P  |   B  |Leader|      |  |      |Leader|   X  |   W  | .  > | ;  : |   Q  | RShift |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
  *                        | ???  | GUI  | Esc  | E    | SYM  |  | NUM  | Space| Tab  | ???  | ???  |
  *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
@@ -86,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SYM] = LAYOUT(
       _______, _______, KC_EXLM, KC_AT,   KC_DLR,  _______,                                     _______, KC_TILD, KC_GRV,  KC_BSLS, _______, _______,
       _______, KC_ASTR, KC_PIPE, KC_PLUS, KC_EQL,  KC_LBRC,                                     KC_LABK, KC_LCBR, KC_LPRN, KC_RABK, KC_PERC, _______,
-      _______, KC_SLSH, KC_AMPR, KC_MINS, KC_HASH, KC_RBRC, _______, _______, _______, _______, KC_AMPR, KC_RCBR, KC_RPRN, KC_UNDS, _______, _______,
+      _______, KC_SLSH, KC_AMPR, KC_MINS, KC_HASH, KC_RBRC, _______, _______, _______, _______, KC_CIRC, KC_RCBR, KC_RPRN, KC_UNDS, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
@@ -149,6 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
+
 // /*
 //  * Layer template
 //  *
@@ -171,9 +172,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //     ),
 };
 
-/* layer_state_t layer_state_set_user(layer_state_t state) { */
-/*     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST); */
-/* } */
+LEADER_EXTERNS();
+void matrix_scan_user(void) {
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+    SEQ_TWO_KEYS(KC_O, KC_T) {
+      SEND_STRING(SS_LCTL(SS_LALT("t")));
+    }
+    SEQ_TWO_KEYS(KC_W, KC_C) {
+      SEND_STRING(SS_LALT(SS_TAP(X_F4)));
+    }
+  }
+}
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {

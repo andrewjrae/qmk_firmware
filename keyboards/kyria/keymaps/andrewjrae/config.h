@@ -31,9 +31,11 @@
 // #define SPLIT_USB_DETECT
 // #define NO_USB_STARTUP_CHECK
 
+// Leader key settings
+#define LEADER_TIMEOUT 300
+#define LEADER_PER_KEY_TIMING
+// Tapping settings
 #define TAPPING_TERM 170
-/* #define TAPPING_TERM 150 */
-/* #define TAPPING_TERM 200 */
 #define RETRO_TAPPING
 #define IGNORE_MOD_TAP_INTERRUPT
 /* #define PERMISSIVE_HOLD_PER_KEY */
