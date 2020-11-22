@@ -55,6 +55,12 @@ bool process_leader(uint16_t keycode, keyrecord_t *record) {
                     keycode = keycode & 0xFF;
                 }
 #    endif  // LEADER_KEY_STRICT_KEY_PROCESSING
+#    ifdef LEADER_SEQ_ESC
+                if (keycode == LEADER_SEQ_ESC) {
+                    leading = false;
+                    leader_end();
+                } else
+#    endif // LEADER_SEQ_ESC
                 if (leader_sequence_size < (sizeof(leader_sequence) / sizeof(leader_sequence[0]))) {
                     leader_sequence[leader_sequence_size] = keycode;
                     leader_sequence_size++;
