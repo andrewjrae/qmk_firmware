@@ -1,8 +1,15 @@
 #include QMK_KEYBOARD_H
+#include <string.h>
+/* #include "process_terminal.h" */
+
+static const char keycode_to_ascii_lut[58] = {0, 0, 0, 0, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 0, 0, 0, '\t', ' ', '-', '=', '[', ']', '\\', 0, ';', '\'', '`', ',', '.', '/'};
 
 enum layers {
-    _RSTHD = 0,
+    _ATHEX = 0,
+    _RSTHD,
     _QWERTY,
+    /* _RSTHD = 0, */
+    /* _QWERTY, */
     _NAV,
     _NUM,
     _SYM,
@@ -15,38 +22,58 @@ enum layers {
 // clang-format off
 #define LAYOUT_WRAPPER( \
     K01, K02, K03, K04, K05, K06, K07, K08, K09, K0A, \
-    K11, K12, K13, K14, K15, K16, K17, K18, K19, K1A, \
+    K11, K12, K13, K14, K15, K16, K17, K18, K19, K1A, KQUOT, \
     K21, K22, K23, K24, K25, K26, K27, K28, K29, K2A, \
     KTHMB \
     ) \
     LAYOUT( \
       KC_TAB,   K01,   K02,   K03,     K04,     K05,                                          K06,     K07,    K08,    K09,    K0A,   KC_PIPE, \
-      MY_ESC,   K11,   K12,   K13,_LST(K14),    K15,                                          K16,_RST(K17),   K18,    K19,    K1A,   KC_QUOT, \
+      MY_ESC,   K11,   K12,   K13,     K14,     K15,                                          K16,     K17,    K18,    K19,    K1A,   KQUOT, \
       KC_LSFT,  K21,   K22,   K23,     K24,     K25,     KC_LEAD, _______, _______, KC_LEAD,  K26,     K27,    K28,    K29,    K2A,   KC_RSFT, \
-                              KC_LGUI, KC_LGUI, MY_LALT, KTHMB,   MY_ENT,  MY_BSPC, MY_SPC,   MY_RCTL, KC_TAB, KC_RALT \
+                              _______, KC_LGUI, MY_LALT, KTHMB,   MY_ENT,  MY_BSPC, MY_SPC,   MY_RCTL, KC_RGUI, _______ \
     )
 
 // clang-format on
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
+ * Alpha Layer: ATHEX a modified THE-1 for better vim usage and personal comfort
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |  Tab   |   Z  |   M  |   L  |   U  | ,  < |                              |   V  |   D  |   R  |   B  |   Q  | \  |   |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |Esc/NAV |   A  |   T  |   H  |   E  |   X  |                              |   C  |   S  |   N  |   O  |   I  | ;  :   |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * | LShift | /  ? |   P  |   F  |   J  | .  > |Leader|      |  |      |Leader|   G  |   K  |   W  | '  " |   Y  | RShift |
+ * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
+ *                        | ???  | GUI  | Esc  | OSM  | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
+ *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_ATHEX] = LAYOUT_WRAPPER(
+        KC_Z,    KC_H,   KC_L,   KC_U,   KC_COMM,        KC_V,   KC_D,   KC_R,   KC_B,    KC_Q,
+        KC_A,    KC_T,   KC_H,   KC_E,   KC_X,           KC_C,   KC_S,   KC_J,   KC_O,    KC_I, KC_SCLN,
+        KC_SLSH, KC_P,   KC_F,   KC_J,   KC_DOT,         KC_G,   KC_K,   KC_W,   KC_QUOT, KC_Y,
+        MY_LSFT
+    ),
+/*
  * Alpha Layer: RSTHD - modified for better vim usage and personal comfort
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |  Tab   |   Z  |   C  |   Y  |   F  |   K  |                              |   J  |   L  | ,  < |   U  | -  _ |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |NAV/ESC |   R  |   S  |   T  |   H  |   D  |                              |   M  |   N  |   A  |   I  |   O  |  ' "   |
+ * |Esc/NAV |   R  |   S  |   T  |   H  |   D  |                              |   M  |   N  |   A  |   I  |   O  |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * | LShift | /  ? |   V  |   G  |   P  |   B  |Leader|      |  |      |Leader|   X  |   W  | .  > | ;  : |   Q  | RShift |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
- *                        | ???  | GUI  | Esc  | E    | SYM  |  | NUM  | Space| Tab  | ???  | ???  |
- *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
+ *                        | ???  | GUI  | Esc  |  E   | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
+ *                        |      |      | Alt  |      |      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_RSTHD] = LAYOUT_WRAPPER(
-        KC_Z,    KC_C,   KC_Y,   KC_F,   KC_K,           KC_J,   KC_L,   KC_COMM, KC_U,    KC_MINS,
-        KC_R,    KC_S,   KC_T,   KC_H,   KC_D,           KC_M,   KC_N,   KC_A,    KC_I,    KC_O,
-        KC_SLSH, KC_V,   KC_G,   KC_P,   KC_B,           KC_X,   KC_W,   KC_DOT,  KC_SCLN, KC_Q,
+        KC_Z,    KC_C, KC_Y, KC_F,       KC_K, KC_J, KC_L,       KC_COMM, KC_U,    KC_MINS,
+        KC_R,    KC_S, KC_T, _LST(KC_H), KC_D, KC_M, _RST(KC_N), KC_A,    KC_I,    KC_O,    KC_QUOT,
+        KC_SLSH, KC_V, KC_G, KC_P,       KC_B, KC_X, KC_W,       KC_DOT,  KC_SCLN, KC_Q,
         KC_E
     ),
 /*
@@ -57,15 +84,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |NAV/Esc |   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  |LShift|      |  |      |LShift|   N  |   M  | ,  < | . >  | /  ? | RShift |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |Leader|      |  |      |Leader|   N  |   M  | ,  < | . >  | /  ? | RShift |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
- *                        | ???  | GUI  | Esc  | Space| SYM  |  | NUM  | Space| Tab  | ???  | ???  |
+ *                        | ???  | GUI  | Esc  | OSM  | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
  *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_QWERTY] = LAYOUT_WRAPPER(
         KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,           KC_Y,   KC_U,   KC_I,    KC_O,   KC_P,
-        KC_A,   KC_S,   KC_D,   KC_F,   KC_G,           KC_H,   KC_J,   KC_K,    KC_L,   KC_SCLN,
+        KC_A,   KC_S,   KC_D,   KC_F,   KC_G,           KC_H,   KC_J,   KC_K,    KC_L,   KC_SCLN, KC_QUOT,
         KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,           KC_N,   KC_M,   KC_COMM, KC_DOT, KC_SLSH,
         MY_LSFT
     ),
@@ -124,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NUM] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
       _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
@@ -173,23 +200,79 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 LEADER_EXTERNS();
+
+#ifdef OLED_DRIVER_ENABLE
+static uint8_t leader_seq_idx;
+static uint8_t leader_display_size;
+static const char space_ascii[] = "SPC";
+static char leader_display[19];
+
+void update_leader_display(uint16_t keycode) {
+    leader_seq_idx = leader_sequence_size;
+    leader_display[leader_display_size] = ' ';
+    ++leader_display_size;
+    switch (keycode) {
+        case KC_SPC:
+            memcpy(leader_display+leader_display_size, space_ascii, sizeof(space_ascii));
+            leader_display_size += sizeof(space_ascii);
+            break;
+        default:
+            leader_display[leader_display_size] = keycode_to_ascii_lut[keycode];
+            ++leader_display_size;
+            break;
+    }
+}
+
+void leader_start(void) {
+    leader_display[0] = 'L';
+    leader_display[1] = 'D';
+    leader_display[2] = 'R';
+    leader_display[3] = '-';
+    leader_display_size = 3;
+}
+#endif
+
 void matrix_scan_user(void) {
   LEADER_DICTIONARY() {
-    leading = false;
-    leader_end();
+#ifdef LEADER_SEQ_ESC
+    leader_time = timer_read();
+#endif
 
     SEQ_TWO_KEYS(KC_O, KC_T) {
-      SEND_STRING(SS_LCTL(SS_LALT("t")));
+        SEND_STRING(SS_LCTL(SS_LALT("t")));
+        leading = false;
     }
     SEQ_TWO_KEYS(KC_W, KC_C) {
-      SEND_STRING(SS_LALT(SS_TAP(X_F4)));
+        SEND_STRING(SS_LALT(SS_TAP(X_F4)));
+        leading = false;
     }
+    SEQ_TWO_KEYS(KC_L, KC_Q) {
+        layer_move(_QWERTY);
+        leading = false;
+    }
+    SEQ_TWO_KEYS(KC_L, KC_R) {
+        layer_move(_RSTHD);
+        leading = false;
+    }
+    SEQ_TWO_KEYS(KC_L, KC_T) {
+        layer_on(_LIGHTS);
+        leading = false;
+    }
+    if (!leading) {
+        leader_end();
+    }
+#ifdef OLED_DRIVER_ENABLE
+    else {
+        leader_display[leader_display_size] = '-';
+    }
+#endif
+
   }
 }
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-	return OLED_ROTATION_180;
+    return OLED_ROTATION_180;
 }
 
 static void render_kyria_logo(void) {
@@ -215,6 +298,7 @@ static void render_qmk_logo(void) {
   oled_write_P(qmk_logo, false);
 }
 
+
 static void render_status(void) {
     // QMK Logo and version information
     render_qmk_logo();
@@ -223,6 +307,9 @@ static void render_status(void) {
     // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
+        case _ATHEX:
+            oled_write_P(PSTR("ATHEX\n"), false);
+            break;
         case _RSTHD:
             oled_write_P(PSTR("RSTHD\n"), false);
             break;
@@ -238,15 +325,31 @@ static void render_status(void) {
         case _SYM:
             oled_write_P(PSTR("Symbols\n"), false);
             break;
+        case _LIGHTS:
+            oled_write_P(PSTR("Lights\n"), false);
+            break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
     }
 
-    // Host Keyboard LED Status
-    uint8_t led_usb_state = host_keyboard_leds();
-    oled_write_P(IS_LED_ON(led_usb_state, USB_LED_NUM_LOCK) ? PSTR("NUMLCK ") : PSTR("       "), false);
-    oled_write_P(IS_LED_ON(led_usb_state, USB_LED_CAPS_LOCK) ? PSTR("CAPLCK ") : PSTR("       "), false);
-    oled_write_P(IS_LED_ON(led_usb_state, USB_LED_SCROLL_LOCK) ? PSTR("SCRLCK ") : PSTR("       "), false);
+    // Leader key display
+    if (leading) {
+        if (leader_sequence_size != leader_seq_idx) {
+            update_leader_display(leader_sequence[leader_sequence_size - 1]);
+        }
+    } else if (leader_display_size != 0) {
+        leader_display_size = 0;
+        leader_seq_idx = 0;
+        memset(leader_display, 0, sizeof(leader_display));
+        oled_write(leader_display, false);
+    }
+    oled_write_ln(leader_display, false);
+
+    /* // Host Keyboard LED Status */
+    /* uint8_t led_usb_state = host_keyboard_leds(); */
+    /* oled_write_P(IS_LED_ON(led_usb_state, USB_LED_NUM_LOCK) ? PSTR("NUMLCK ") : PSTR("       "), false); */
+    /* oled_write_P(IS_LED_ON(led_usb_state, USB_LED_CAPS_LOCK) ? PSTR("CAPLCK ") : PSTR("       "), false); */
+    /* oled_write_P(IS_LED_ON(led_usb_state, USB_LED_SCROLL_LOCK) ? PSTR("SCRLCK ") : PSTR("       "), false); */
 }
 
 void oled_task_user(void) {

@@ -32,7 +32,8 @@
 // #define NO_USB_STARTUP_CHECK
 
 // Leader key settings
-#define LEADER_TIMEOUT 300
+#define LEADER_SEQ_ESC KC_ESC
+#define LEADER_TIMEOUT 200
 #define LEADER_PER_KEY_TIMING
 // Tapping settings
 #define TAPPING_TERM 170
@@ -46,7 +47,8 @@
 #define MY_ENT LT(_SYM, KC_ENT)
 
 #define MY_SPC LT(_NAV, KC_SPC)
-#define MY_LSFT MT(MOD_LSFT, KC_SPC)
+/* #define MY_LSFT MT(MOD_LSFT, KC_SPC) */
+#define MY_LSFT OSM(MOD_LSFT)
 #define MY_RCTL MT(MOD_RCTL, KC_TAB)
 #define MY_LALT MT(MOD_LALT, KC_ESC)
 
