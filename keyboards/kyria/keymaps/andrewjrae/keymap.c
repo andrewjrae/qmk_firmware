@@ -52,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_ATHEX] = LAYOUT_WRAPPER(
         KC_Z,    KC_H,   KC_L,   KC_U,   KC_COMM,        KC_V,   KC_D,   KC_R,   KC_B,    KC_Q,
-        KC_A,    KC_T,   KC_H,   KC_E,   KC_X,           KC_C,   KC_S,   KC_J,   KC_O,    KC_I, KC_SCLN,
+        KC_A,    KC_T,   KC_H,   KC_E,   KC_X,           KC_C,   KC_S,   KC_N,   KC_O,    KC_I, KC_SCLN,
         KC_SLSH, KC_P,   KC_F,   KC_J,   KC_DOT,         KC_G,   KC_K,   KC_W,   KC_QUOT, KC_Y,
         MY_LSFT
     ),
@@ -238,23 +238,33 @@ void matrix_scan_user(void) {
     leader_time = timer_read();
 #endif
 
+    // Open terminal
     SEQ_TWO_KEYS(KC_O, KC_T) {
         SEND_STRING(SS_LCTL(SS_LALT("t")));
         leading = false;
     }
+    // Close window
     SEQ_TWO_KEYS(KC_W, KC_C) {
         SEND_STRING(SS_LALT(SS_TAP(X_F4)));
         leading = false;
     }
-    SEQ_TWO_KEYS(KC_L, KC_Q) {
-        layer_move(_QWERTY);
+    // Switch to ATHEX
+    SEQ_TWO_KEYS(KC_L, KC_A) {
+        layer_on(_LIGHTS);
         leading = false;
     }
+    // Switch to RSTHD
     SEQ_TWO_KEYS(KC_L, KC_R) {
         layer_move(_RSTHD);
         leading = false;
     }
-    SEQ_TWO_KEYS(KC_L, KC_T) {
+    // Switch to QWERTY
+    SEQ_TWO_KEYS(KC_L, KC_Q) {
+        layer_move(_QWERTY);
+        leading = false;
+    }
+    // Switch to lights layer
+    SEQ_TWO_KEYS(KC_L, KC_L) {
         layer_on(_LIGHTS);
         leading = false;
     }
