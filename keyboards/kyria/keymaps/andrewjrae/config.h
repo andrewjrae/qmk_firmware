@@ -39,7 +39,8 @@
 #define TAPPING_TERM 170
 #define RETRO_TAPPING
 #define IGNORE_MOD_TAP_INTERRUPT
-/* #define PERMISSIVE_HOLD_PER_KEY */
+
+#define ONESHOT_TIMEOUT 400
 
 /* Default all the mods to be one shot */
 #define MY_ESC LT(_NAV, KC_ESC)
