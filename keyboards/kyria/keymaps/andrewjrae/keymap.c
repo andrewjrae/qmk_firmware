@@ -29,7 +29,7 @@ enum layers {
     LAYOUT( \
       KC_TAB,   K01,   K02,   K03,     K04,     K05,                                          K06,     K07,    K08,    K09,    K0A,   KC_PIPE, \
       MY_ESC,   K11,   K12,   K13,     K14,     K15,                                          K16,     K17,    K18,    K19,    K1A,   KQUOT, \
-      KC_LSFT,  K21,   K22,   K23,     K24,     K25,     KC_LEAD, _______, _______, KC_LEAD,  K26,     K27,    K28,    K29,    K2A,   KC_RSFT, \
+      KC_LSFT,  K21,   K22,   K23,     K24,     K25,     KC_LEAD, _______, _______, KC_LEAD,  K26,     K27,    K28,    K29,    K2A,   KC_MINS, \
                               _______, KC_LGUI, MY_LALT, KTHMB,   MY_ENT,  MY_BSPC, MY_SPC,   MY_RCTL, KC_RGUI, _______ \
     )
 
@@ -40,20 +40,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Alpha Layer: ATHEX a modified THE-1 for better vim usage and personal comfort
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Z  |   M  |   L  |   U  | ,  < |                              |   V  |   D  |   R  | '  " |   Q  | \  |   |
+ * |  Tab   |   Z  |   M  |   L  |   U  | .  > |                              |   V  |   D  |   R  | '  " |   Q  | \  |   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Esc/NAV |   A  |   T  |   H  |   E  |   X  |                              |   C  |   S  |   N  |   O  |   I  | ;  :   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift | /  ? |   P  |   F  |   J  | .  > |Leader|      |  |      |Leader|   G  |   K  |   W  |   B  |   Y  | RShift |
+ * | LShift | /  ? |   P  |   F  |   K  | ,  < |Leader|      |  |      |Leader|   G  |   J  |   W  |   B  |   Y  | -  _   |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
- *                        | ???  | GUI  | Esc  | OSM  | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
+ *                        | ???  | GUI  | Esc  | OSM  | NUM  |  | SYM  | Space| Tab  | GUI  | ???  |
  *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ATHEX] = LAYOUT_WRAPPER(
-        KC_Z,    KC_M,   KC_L,   KC_U,   KC_COMM,        KC_V,   KC_D,   KC_R,   KC_QUOT, KC_Q,
-        KC_A,    KC_T,   KC_H,   KC_E,   KC_X,           KC_C,   KC_S,   KC_N,   KC_O,    KC_I, KC_SCLN,
-        KC_SLSH, KC_P,   KC_F,   KC_J,   KC_DOT,         KC_G,   KC_K,   KC_W,   KC_B,    KC_Y,
+        KC_Z,    KC_M,   KC_L,   KC_U,   KC_DOT,        KC_V,   KC_D,   KC_R,   KC_QUOT, KC_Q,
+        KC_A,    KC_T,   KC_H,   KC_E,   KC_X,          KC_C,   KC_S,   KC_N,   KC_O,    KC_I, KC_SCLN,
+        KC_SLSH, KC_P,   KC_F,   KC_K,   KC_COMM,       KC_G,   KC_J,   KC_W,   KC_B,    KC_Y,
         MY_LSFT
     ),
 /*
