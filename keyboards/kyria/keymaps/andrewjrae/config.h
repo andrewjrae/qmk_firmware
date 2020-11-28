@@ -44,8 +44,8 @@
 
 /* Default all the mods to be one shot */
 #define MY_ESC LT(_NAV, KC_ESC)
-#define MY_BSPC LT(_NUM, KC_BSPC)
-#define MY_ENT LT(_SYM, KC_ENT)
+#define MY_BSPC LT(_SYM, KC_BSPC)
+#define MY_ENT LT(_NUM, KC_ENT)
 
 #define MY_SPC LT(_NAV, KC_SPC)
 /* #define MY_LSFT MT(MOD_LSFT, KC_SPC) */
