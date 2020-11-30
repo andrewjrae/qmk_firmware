@@ -1,0 +1,39 @@
+#+TITLE: Logs
+* RSTHD with Mod-Tap and THE-1 with OSS
+** RSTHD
+I have given two mappings a try so far, RSTHD and THE-1. I started with a slightly modded RSTHD where I swapped =z= and =j= so that I satisfied my vim needs. I practiced this layout with mod tap shift on the index fingers for a week and got up to 30wpm (yay!). But I quickly found myself stumbling with the mod tap shift, especially on =the= since it's just /so fast/ on RSTHD. Even after trying all the mod tap tweaking, I never could get =The= consistently. And since one of the main reasons I got the Kyria was to make things more consistent, this really bothered me. So I decided one shots might be the route for me, and shopped around for another layout I could try.
+** THE-1
+So I came upon THE-1, which took a little more work to get my =j= and =k= in places I liked, but here's what I came up with:
+#+BEGIN_SRC c
+/*
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |  Tab   |   Z  |   M  |   L  |   U  | .  > |                              |   V  |   D  |   R  | '  " |   Q  | \  |   |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |Esc/NAV |   A  |   T  |   H  |   E  |   X  |                              |   C  |   S  |   N  |   O  |   I  | ;  :   |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * | LShift | /  ? |   P  |   F  |   K  | ,  < |Leader|      |  |      |Leader|   G  |   J  |   W  |   B  |   Y  | -  _   |
+ * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
+ *                        | ???  | GUI  | Esc  | OSM  | NUM  |  | SYM  | Space| Tab  | GUI  | ???  |
+ *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+#+END_SRC
+I got up to 30wpm in about a week (thought it felt tougher mostly because it's so similar to RSTHD and I kept getting keys mixed). Now there's a few things I really like about this layout, =j= and =k= are in what I see as the perfect compromise, very comfy when the fingers are relaxed, and one shot shift of the thumb felt really good to me. That being said, THE-1 has a few more same finger bigrams that RSTHD from the get go, and I added more with =ke=, =ex=, and =bo=. Note that I also tried =j= and =k= swapped, but the =ju=, =ck= bigrams bothered me a lot since they were on the awkward side. That being said, I don't think THE-1 is quite as optimized as RSTHD, =e= and =s= on index fingers makes it really hard to avoid same finger bigrams, and while putting comma and dot on the index seems like a decent work around, it turns out =e= is the most common final letter of words so really you still have same finger bigrams :/.
+* Back to RSTHD?
+In the end these same finger bigrams are annoying me too much to be sure it's /the one/ for me ;). Anyways, I'm still undecided, but I did come up with a slightly bigger mod to RSTHD that takes all the things I liked from my THE-1 layout, and tries to get them into RSTHD.
+#+BEGIN_SRC c
+/*
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   X  |   L  | ,  < |   U  |   Q  |  | \   |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |Esc/NAV |   R  |   S  |   T  |   H  |   D  |                              |   M  |   N  |   A  |   I  |   O  |  ' "   |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |  /  ?  |  OSS |   W  |   G  |   K  |   B  |Leader|      |  |      |Leader|   V  |   J  | .  > | ;  : |  OSS |  -  _  |
+ * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
+ *                        | ???  | GUI  | Esc  |  E   | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
+ *                        |      |      | Alt  |      |      |  |      | NAV  | Ctrl |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+*/
+#+END_SRC
+Note that I moved =w= and =v= since I frequently type =wl= when moving between splits/windows in vim/emacs. And looking at the Norvig data it looks like I can do this with little penalty.
+I don't think I'll like the one shot shifts on the pinky nearly as much as the thumbs, but considering how much more frequent =e= is than shift, it seems like it might be worth it.
