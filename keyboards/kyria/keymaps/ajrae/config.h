@@ -36,9 +36,11 @@
 #define LEADER_TIMEOUT 200
 #define LEADER_PER_KEY_TIMING
 // Tapping settings
-#define TAPPING_TERM 170
+/* #define TAPPING_TERM 170 */
+#define TAPPING_TERM 200
 #define RETRO_TAPPING
 #define IGNORE_MOD_TAP_INTERRUPT
+#define TAPPING_FORCE_HOLD
 
 #define ONESHOT_TIMEOUT 400
 
