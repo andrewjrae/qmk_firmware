@@ -1,12 +1,9 @@
 #include QMK_KEYBOARD_H
 #include <string.h>
-/* #include "process_terminal.h" */
 
 static const char keycode_to_ascii_lut[58] = {0, 0, 0, 0, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 0, 0, 0, '\t', ' ', '-', '=', '[', ']', '\\', 0, ';', '\'', '`', ',', '.', '/'};
 
 enum layers {
-    /* _ATHEX = 0, */
-    /* _RSTHD, */
     _RSTHD = 0,
     _ATHEX,
     _QWERTY,

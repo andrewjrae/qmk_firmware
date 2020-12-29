@@ -38,7 +38,7 @@
 // Tapping settings
 /* #define TAPPING_TERM 170 */
 #define TAPPING_TERM 200
-#define RETRO_TAPPING
+/* #define RETRO_TAPPING */
 #define IGNORE_MOD_TAP_INTERRUPT
 #define TAPPING_FORCE_HOLD
 
@@ -50,7 +50,6 @@
 #define MY_ENT LT(_NUM, KC_ENT)
 
 #define MY_SPC LT(_NAV, KC_SPC)
-/* #define MY_LSFT MT(MOD_LSFT, KC_SPC) */
 #define MY_LSFT OSM(MOD_LSFT)
 #define MY_RCTL MT(MOD_RCTL, KC_TAB)
 #define MY_LALT MT(MOD_LALT, KC_ESC)
