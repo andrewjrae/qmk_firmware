@@ -27,6 +27,12 @@
   #define RGBLIGHT_VAL_STEP 8
 #endif
 
+// Save firmware space
+#undef LOCKING_SUPPORT_ENABLE
+#undef LOCKING_RESYNC_ENABLE
+
+#define EE_HANDS
+
 // If you are using an Elite C rev3 on the slave side, uncomment the lines below:
 // #define SPLIT_USB_DETECT
 // #define NO_USB_STARTUP_CHECK
