@@ -14,7 +14,20 @@ enum layers {
 };
 
 // clang-format off
-#define LAYOUT_WRAPPER( \
+#define MY_HOMEROW_LAYOUT( \
+    L00, L01, L02, L03, L04, L05,                     R06, R07, R08, R09, R10, R11, \
+    L12, L13, L14, L15, L16, L17,                     R18, R19, R20, R21, R22, R23, \
+    L24, L25, L26, L27, L28, L29, L30, L31, R32, R33, R34, R35, R36, R37, R38, R39, \
+                   L40, L41, L42, L43, L44, R45, R46, R47, R48, R49 \
+    ) \
+    LAYOUT( \
+        L00, L01, L02, L03, L04, L05,                     R06, R07, R08, R09, R10, R11, \
+        L12, MT(MOD_LALT, L13), MT(MOD_LGUI, L14), MT(MOD_LCTL, L15), MT(MOD_LSFT, L16), L17,                     R18, MT(MOD_LSFT, R19), MT(MOD_LCTL, R20), MT(MOD_LGUI, R21), MT(MOD_LALT, R22), R23, \
+        L24, L25, L26, L27, L28, L29, L30, L31, R32, R33, R34, R35, R36, R37, R38, R39, \
+                    L40, L41, L42, L43, L44, R45, R46, R47, R48, R49 \
+    )
+
+#define MY_ALPHA_LAYOUT( \
     K01, K02, K03, K04, K05, K06, K07, K08, K09, K0A, \
     K11, K12, K13, K14, K15, K16, K17, K18, K19, K1A, KQUOT, \
     K21, K22, K23, K24, K25, K26, K27, K28, K29, K2A, \
@@ -26,7 +39,6 @@ enum layers {
       KC_SLSH,  K21,   K22,   K23,     K24,     K25,     KC_LEAD, _______, _______, KC_LEAD,  K26,     K27,    K28,    K29,    K2A,   KC_MINS, \
                               _______, KC_LGUI, MY_LALT, KTHMB,   MY_ENT,  MY_BSPC, MY_SPC,   MY_RCTL, KC_RGUI, _______ \
     )
-
 // clang-format on
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -44,15 +56,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      | Alt  |      |      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-#define MY_S MT(MOD_LGUI,KC_S)
-#define MY_T MT(MOD_LALT,KC_T)
-#define MY_H MT(MOD_LCTL,KC_H)
-#define MY_N MT(MOD_LCTL,KC_N)
-#define MY_A MT(MOD_LALT,KC_A)
-#define MY_I MT(MOD_LGUI,KC_I)
-    [_RSTHD] = LAYOUT(
+    [_RSTHD] = MY_HOMEROW_LAYOUT(
         KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_COMM, KC_U,    KC_Q, KC_PIPE,
-LT(_NAV,KC_SLSH), KC_R,    MY_S, MY_T, MY_H, KC_D,                                     KC_L, MY_N, MY_A,    MY_I,    KC_O,    KC_QUOT,
+LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_QUOT,
         KC_SLSH,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_DOT,  KC_SCLN, MY_LSFT, KC_MINS,
                 _______, KC_LGUI, MY_LALT, LT(_NAV,KC_E),   LT(_SYM,KC_ENT),  MY_BSPC, LT(_NUM,KC_SPC),    MY_RCTL, KC_RGUI, _______
     ),
@@ -70,7 +76,7 @@ LT(_NAV,KC_SLSH), KC_R,    MY_S, MY_T, MY_H, KC_D,                              
  *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_ATHEX] = LAYOUT_WRAPPER(
+    [_ATHEX] = MY_ALPHA_LAYOUT(
         KC_Z,    KC_M,   KC_L,   KC_U,   KC_DOT,        KC_V,   KC_D,   KC_R,   KC_QUOT, KC_Q,
         KC_A,    KC_T,   KC_H,   KC_E,   KC_X,          KC_C,   KC_S,   KC_N,   KC_O,    KC_I, KC_SCLN,
         KC_SLSH, KC_P,   KC_F,   KC_K,   KC_COMM,       KC_G,   KC_J,   KC_W,   KC_B,    KC_Y,
@@ -90,7 +96,7 @@ LT(_NAV,KC_SLSH), KC_R,    MY_S, MY_T, MY_H, KC_D,                              
  *                        |      |      | Alt  | Shift|      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_QWERTY] = LAYOUT_WRAPPER(
+    [_QWERTY] = MY_ALPHA_LAYOUT(
         KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,           KC_Y,   KC_U,   KC_I,    KC_O,   KC_P,
         KC_A,   KC_S,   KC_D,   KC_F,   KC_G,           KC_H,   KC_J,   KC_K,    KC_L,   KC_SCLN, KC_QUOT,
         KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,           KC_N,   KC_M,   KC_COMM, KC_DOT, KC_SLSH,
@@ -124,7 +130,7 @@ LT(_NAV,KC_SLSH), KC_R,    MY_S, MY_T, MY_H, KC_D,                              
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn|      |      |  |      |      | MLeft| Mdown| MUp  |MRight|      |        |
+ * |        |      |      |      | Mute | VolDn|      |      |  |      |      |      |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -133,7 +139,7 @@ LT(_NAV,KC_SLSH), KC_R,    MY_S, MY_T, MY_H, KC_D,                              
     [_NAV] = LAYOUT(
       _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
       _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
@@ -150,11 +156,11 @@ LT(_NAV,KC_SLSH), KC_R,    MY_S, MY_T, MY_H, KC_D,                              
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_NUM] = LAYOUT(
+    [_NUM] = MY_HOMEROW_LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
       _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                 _______, _______, _______, KC_SPC, _______, _______, _______, _______, _______, _______
+      _______, _______, _______, _______, _______, KC_F11,  _______, _______, _______, _______, KC_F12,  _______, _______, _______, _______, _______,
+                                 _______, _______, _______, KC_SPC,  _______, _______, _______, _______, _______, _______
     ),
 /*
  * Adjust Layer: Function keys, RGB
