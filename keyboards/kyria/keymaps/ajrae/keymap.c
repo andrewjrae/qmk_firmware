@@ -1,8 +1,6 @@
 #include QMK_KEYBOARD_H
 #include <string.h>
 
-static const char keycode_to_ascii_lut[58] = {0, 0, 0, 0, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 0, 0, 0, '\t', ' ', '-', '=', '[', ']', '\\', 0, ';', '\'', '`', ',', '.', '/'};
-
 enum layers {
     _RSTHD = 0,
     _ATHEX,
@@ -205,9 +203,13 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 //     ),
 };
 
+#ifndef MY_SPLIT_RIGHT
+
 LEADER_EXTERNS();
 
 #ifdef OLED_DRIVER_ENABLE
+static const char keycode_to_ascii_lut[58] = {0, 0, 0, 0, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 0, 0, 0, '\t', ' ', '-', '=', '[', ']', '\\', 0, ';', '\'', '`', ',', '.', '/'};
+
 static uint8_t leader_seq_idx;
 static uint8_t leader_display_size;
 static const char space_ascii[] = "SPC";
@@ -370,4 +372,5 @@ void oled_task_user(void) {
         render_kyria_logo();
     }
 }
+#endif
 #endif
