@@ -1,6 +1,9 @@
 #include QMK_KEYBOARD_H
 #include <string.h>
 
+#ifdef MY_SPLIT_RIGHT
+#endif
+
 enum layers {
     _RSTHD = 0,
     _ATHEX,
@@ -101,7 +104,7 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
         MY_LSFT
     ),
 /*
- * Lower Layer: Symbols
+ * Symbols Layer: Symbols with C style coding in mind
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |      |  !   |  @   |  $   |      |                              |      |  ~   |  `   |  \   |      |        |
@@ -121,34 +124,14 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
- * Raise Layer: Number keys, media, navigation
+ * Number Layer: Numbers and function keys
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
+ * |        |  F1  | F2   | F3   | F4   | F5   |                              | F6   | F7   | F8   | F9   | F10  |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn|      |      |  |      |      |      |      |      |      |      |        |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
- */
-    [_NAV] = LAYOUT(
-      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
-      _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-    ),
-/*
- * Raise Layer: Number keys, media, navigation
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn|      |      |  |      |      | MLeft| Mdown| MUp  |MRight|      |        |
+ * |        |      |      |      | F11  |      |      |      |  |      |      |      | F12  |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -157,29 +140,29 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
     [_NUM] = MY_HOMEROW_LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
       _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
-      _______, _______, _______, _______, _______, KC_F11,  _______, _______, _______, _______, KC_F12,  _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, KC_F11,  _______, _______, _______, _______, _______, _______, KC_F12,  _______, _______, _______, _______,
                                  _______, _______, _______, KC_SPC,  _______, _______, _______, _______, _______, _______
     ),
 /*
- * Adjust Layer: Function keys, RGB
+ * Nav Layer: Navigation keys, copy paste, and media keys
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        | F1   |  F2  | F3   | F4   | F5   |                              | F6   | F7   |  F8  | F9   | F10  |        |
+ * |        |      |      | Copy | End  | Paste|                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | TOG  | SAI  | HUI  | VAI  | MOD  |                              |      |      |      | F11  | F12  |        |
+ * |        | End  | Next | Play | VolUp| Del  |                              | Left | Down | Up   | Right| Home |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      | SAD  | HUD  | VAD  | RMOD |      |      |  |      |      |      |      |      |      |      |        |
+ * |        |      | Prev | Mute | VolDn| VolDn|      |      |  |      |      | vi B | PgDn | PgUp | vi W |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    /* [_LIGHTS] = LAYOUT( */
-    /*   _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______, */
-    /*   _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, _______, _______, KC_F11,  KC_F12,  _______, */
-    /*   _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, */
-    /*                              _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ */
-    /* ), */
+    [_NAV] = LAYOUT(
+      _______, _______, _______, KC_COPY, KC_END,  KC_PASTE,                                    _______, _______, _______, _______, _______, _______,
+      _______, KC_END,  KC_MNXT, KC_MPLY, KC_VOLU, KC_DEL,                                      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_HOME, _______,
+      _______, _______, KC_MPRV, KC_MUTE, KC_VOLD, _______, _______, _______, _______, _______, VI_B,    KC_PGDN, KC_PGUP, VI_W,    _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
 
 // /*
 //  * Layer template
@@ -321,34 +304,34 @@ static void render_qmk_logo(void) {
 static void render_status(void) {
     // QMK Logo and version information
     render_qmk_logo();
-    oled_write_P(PSTR("Kyria rev1.0\n\n"), false);
+    oled_write_P(PSTR("Kyria - ajrae\n\n"), false);
 
     // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
         case _ATHEX:
-            oled_write_P(PSTR("ATHEX\n"), false);
+            oled_write_P(PSTR("ATHEX\n\n"), false);
             break;
         case _RSTHD:
-            oled_write_P(PSTR("RSTHD\n"), false);
+            oled_write_P(PSTR("RSTHD\n\n"), false);
             break;
         case _QWERTY:
-            oled_write_P(PSTR("QWERTY\n"), false);
+            oled_write_P(PSTR("QWERTY\n\n"), false);
             break;
         case _NAV:
-            oled_write_P(PSTR("Navigation\n"), false);
+            oled_write_P(PSTR("Navigation\n\n"), false);
             break;
         case _NUM:
-            oled_write_P(PSTR("Numbers\n"), false);
+            oled_write_P(PSTR("Numbers\n\n"), false);
             break;
         case _SYM:
-            oled_write_P(PSTR("Symbols\n"), false);
+            oled_write_P(PSTR("Symbols\n\n"), false);
             break;
         case _LIGHTS:
-            oled_write_P(PSTR("Lights\n"), false);
+            oled_write_P(PSTR("Lights\n\n"), false);
             break;
         default:
-            oled_write_P(PSTR("Undefined\n"), false);
+            oled_write_P(PSTR("Undefined\n\n"), false);
     }
 
     // Leader key display
