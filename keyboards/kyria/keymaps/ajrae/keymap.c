@@ -57,11 +57,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      | Alt  |      |      |  |      | NAV  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
+ #define RST_E LT(_NAV, KC_E)
+ #define RST_SPC LT(_NUM, KC_SPC)
+ #define RST_ENT LT(_SYM, KC_ENT)
+
     [_RSTHD] = MY_HOMEROW_LAYOUT(
-        KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_COMM, KC_U,    KC_Q, KC_PIPE,
+        KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_COMM, KC_U,    KC_Q,    KC_PIPE,
 LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_QUOT,
         KC_SLSH,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_DOT,  KC_SCLN, MY_LSFT, KC_MINS,
-                _______, KC_LGUI, MY_LALT, LT(_NAV,KC_E),   LT(_SYM,KC_ENT),  MY_BSPC, LT(_NUM,KC_SPC),    MY_RCTL, KC_RGUI, _______
+                        _______, KC_LGUI, MY_LALT,   RST_E, RST_ENT, MY_BSPC, RST_SPC, MY_RCTL, KC_RGUI, _______
     ),
 /*
  * Alpha Layer: ATHEX a modified THE-1 for better vim usage and personal comfort
@@ -157,8 +161,9 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
+ #define LCSPSCR LSFT(LCTL(KC_PSCR))
     [_NAV] = LAYOUT(
-      _______, _______, _______, KC_COPY, KC_END,  KC_PASTE,                                    _______, _______, _______, _______, _______, _______,
+      _______, _______, KC_PSCR, KC_COPY, LCSPSCR, KC_PASTE,                                    _______, _______, _______, _______, _______, _______,
       _______, KC_END,  KC_MNXT, KC_MPLY, KC_VOLU, KC_DEL,                                      KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_HOME, _______,
       _______, _______, KC_MPRV, KC_MUTE, KC_VOLD, _______, _______, _______, _______, _______, VI_B,    KC_PGDN, KC_PGUP, VI_W,    _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
@@ -188,6 +193,8 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 
 #ifndef MY_SPLIT_RIGHT
 
+/* --------------- LEADER SEQUENCES --------------- */
+#ifdef LEADER_ENABLE
 LEADER_EXTERNS();
 
 #ifdef OLED_DRIVER_ENABLE
@@ -221,7 +228,7 @@ void leader_start(void) {
     leader_display[3] = '-';
     leader_display_size = 3;
 }
-#endif
+#endif // end oled enable
 
 void matrix_scan_user(void) {
   LEADER_DICTIONARY() {
@@ -267,10 +274,10 @@ void matrix_scan_user(void) {
     else {
         leader_display[leader_display_size] = '-';
     }
-#endif
-
+#endif // end oled enable
   }
 }
+#endif // end leader enable
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -333,7 +340,7 @@ static void render_status(void) {
         default:
             oled_write_P(PSTR("Undefined\n\n"), false);
     }
-
+#ifdef LEADER_ENABLE
     // Leader key display
     if (leading) {
         if (leader_sequence_size != leader_seq_idx) {
@@ -346,6 +353,7 @@ static void render_status(void) {
         oled_write(leader_display, false);
     }
     oled_write_ln(leader_display, false);
+#endif // end leader enable
 }
 
 void oled_task_user(void) {
@@ -355,5 +363,6 @@ void oled_task_user(void) {
         render_kyria_logo();
     }
 }
-#endif
-#endif
+
+#endif // end oled enable
+#endif // end is not right side
