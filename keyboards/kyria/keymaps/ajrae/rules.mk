@@ -1,6 +1,7 @@
-# Enable leader keys
-LEADER_ENABLE = yes
-OLED_DRIVER_ENABLE = yes   # Enables the use of OLED displays
+# User settings
+LEADER_ENABLE = yes      # Enable leader keys
+OLED_DRIVER_ENABLE = yes # Enables the use of OLED displays
+COMBO_ENABLE = yes       # Enables combos
 
 # Save firmware space
 MOUSEKEY_ENABLE = no
@@ -13,6 +14,6 @@ RGBLIGHT_ENABLE = no      # Enable keyboard RGB underglow
 # If flashing the right side
 RIGHT = 0
 ifeq ($(RIGHT), 1)
-	OLED_DRIVER_ENABLE = no   # Enables the use of OLED displays
+	OLED_DRIVER_ENABLE = no   # Disables the use of OLED displays
 	CFLAGS += "-D MY_SPLIT_RIGHT"
 endif

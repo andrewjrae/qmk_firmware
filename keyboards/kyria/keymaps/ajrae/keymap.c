@@ -193,6 +193,47 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 
 #ifndef MY_SPLIT_RIGHT
 
+/* --------------- COMBOS --------------- */
+#ifdef COMBO_ENABLE
+enum combo_events {
+  PD_COMBO,
+  VL_COMBO,
+  LEFT_LEAD,
+  RIGHT_LEAD,
+};
+
+const uint16_t PROGMEM pd_combo[] = {KC_P, KC_D, COMBO_END};
+const uint16_t PROGMEM vl_combo[] = {KC_V, KC_L, COMBO_END};
+/* const uint16_t PROGMEM left_thumb_combo[] = {RST_E, KC_LEAD, COMBO_END}; */
+/* const uint16_t PROGMEM right_thumb_combo[] = {RST_SPC, KC_LEAD, COMBO_END}; */
+
+combo_t key_combos[COMBO_COUNT] = {
+  [ PD_COMBO ] = COMBO_ACTION(pd_combo),
+  [ VL_COMBO ] = COMBO_ACTION(vl_combo),
+  /* [ LEFT_LEAD ] = COMBO_ACTION(left_thumb_combo), */
+  /* [ RIGHT_LEAD ] = COMBO_ACTION(right_thumb_combo), */
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch (combo_index) {
+        // This is the leader key for my xmonad config
+        case LEFT_LEAD:
+        case PD_COMBO:
+            if (pressed) {
+                tap_code16(LGUI(KC_G));
+            }
+            break;
+        case RIGHT_LEAD:
+        case VL_COMBO:
+            if (pressed) {
+                /* tap_code16(KC_LEAD); */
+                qk_leader_start(); // the underlying leader command
+            }
+            break;
+    }
+}
+#    endif
+
 /* --------------- LEADER SEQUENCES --------------- */
 #ifdef LEADER_ENABLE
 LEADER_EXTERNS();

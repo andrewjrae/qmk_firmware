@@ -31,20 +31,20 @@
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
 
+// Enable eeprom hand definitions
 #define EE_HANDS
-
-// If you are using an Elite C rev3 on the slave side, uncomment the lines below:
-// #define SPLIT_USB_DETECT
-// #define NO_USB_STARTUP_CHECK
 
 // Leader key settings
 #define LEADER_SEQ_ESC KC_ESC
 #define LEADER_TIMEOUT 200
 #define LEADER_PER_KEY_TIMING
+
+// Combo settings
+#define COMBO_COUNT 4
+#define COMBO_TERM 50
+
 // Tapping settings
-/* #define TAPPING_TERM 170 */
 #define TAPPING_TERM 200
-/* #define RETRO_TAPPING */
 #define IGNORE_MOD_TAP_INTERRUPT
 #define TAPPING_FORCE_HOLD
 
