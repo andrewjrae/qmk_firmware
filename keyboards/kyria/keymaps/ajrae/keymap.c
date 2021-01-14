@@ -51,11 +51,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Alpha Layer: RSTHD - modified for better vim usage and personal comfort
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Z  |   W  |   Y  |   F  |   P  |                              |   V  |   M  | '  " |   U  |   Q  |  | \   |
+ * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   V  |   M  | '  " |   U  |   Q  |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |  /  ?  |   R  |   S  |   T  |   H  |   D  |                              |   L  |   N  |   A  |   I  |   O  |  ; :   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |  CAPS  |  OSS |   C  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | ,  < | .  > |  OSS |  -  _  |
+ * |  CAPS  |  OSS |   W  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | ,  < | .  > |  OSS |  -  _  |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
  *                        | ???  | GUI  | Esc  |  E   | SYM  |  | SYM  | Space| Tab  | GUI  | ???  |
  *                        |      |      | Alt  |  NAV |      |  |      | NUM  | Ctrl |      |      |
@@ -66,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  #define RST_ENT LT(_SYM, KC_ENT)
 
     [_RSTHD] = MY_HOMEROW_LAYOUT(
-        KC_TAB,   KC_Z,    KC_W, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_QUOT, KC_U,    KC_Q,    KC_PIPE,
+        KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_QUOT, KC_U,    KC_Q,    KC_PIPE,
 LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_SCLN,
-       SMRTCAPS,  MY_LSFT, KC_C, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_COMM, KC_DOT,  MY_RSFT, KC_MINS,
+       SMRTCAPS,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_COMM, KC_DOT,  MY_RSFT, KC_MINS,
                         _______, KC_LGUI, MY_LALT,   RST_E, RST_ENT, MY_BSPC, RST_SPC, MY_RCTL, KC_RGUI, _______
     ),
 /*

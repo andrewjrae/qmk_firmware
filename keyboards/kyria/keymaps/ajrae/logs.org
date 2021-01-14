@@ -38,15 +38,15 @@ In the end these same finger bigrams are annoying me too much to be sure it's /t
 Note that I moved =w= and =v= since I frequently type =wl= when moving between splits/windows in vim/emacs. And looking at the [[http://norvig.com/mayzner.html][Norvig]] data it looks like I can do this with little penalty.
 I don't think I'll like the one shot shifts on the pinky quite as much as the thumb, but considering how much more frequent =e= is than shift, it seems like it might be worth it.
 * RSTHD it is
-The one shot shift pinkies are working well enough for me so far, and the lower same finger usage is feels nicer thus far. I think this layout strikes a nice balance between what I desired for vim compatibility. That being said I have a few more tweaks I'd like to make. I find that =l= isn't super comfortable to type in resting position (ie not actively typing just navigating in vim), so I've decided to swap =l= and =m=. I also found that I often hit =c= instead of =w=, this is mostly because I'm so used the QWERTY position of =w=. At first I thought I should just power through this, but looking at simply swapping =c= and =w= it looks like this will also improve the =ck= diagram which I have found mildly uncomfortable.
+The one shot shift pinkies are working well enough for me so far, and the lower same finger usage is feels nicer thus far. I think this layout strikes a nice balance between what I desired for vim compatibility. That being said I have a few more tweaks I'd like to make. I find that =l= isn't super comfortable to type in resting position (ie not actively typing just navigating in vim), so I've decided to swap =l= and =m=.
 #+BEGIN_SRC c
 /*
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Z  |   W  |   Y  |   F  |   P  |                              |   V  |   M  | ,  < |   U  |   Q  |  | \   |
+ * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   V  |   M  | ,  < |   U  |   Q  |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |  /  ?  |   R  |   S  |   T  |   H  |   D  |                              |   L  |   N  |   A  |   I  |   O  |  ' "   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |  /  ?  |  OSS |   C  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | .  > | ;  : |  OSS |  -  _  |
+ * |  /  ?  |  OSS |   W  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | .  > | ;  : |  OSS |  -  _  |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
  *                        | ???  | GUI  | Esc  |  E   | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
  *                        |      |      | Alt  |      |      |  |      | NAV  | Ctrl |      |      |
@@ -62,11 +62,11 @@ So I've decided, for better or worse, that I'm changing up my whole symbol confi
 #+BEGIN_SRC c
 /*
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Z  |   W  |   Y  |   F  |   P  |                              |   V  |   M  | '  " |   U  |   Q  |  | \   |
+ * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   V  |   M  | '  " |   U  |   Q  |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |  /  ?  |   R  |   S  |   T  |   H  |   D  |                              |   L  |   N  |   A  |   I  |   O  |  ; :   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |  CAPS  |  OSS |   C  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | ,  < | .  > |  OSS |  -  _  |
+ * |  CAPS  |  OSS |   W  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | ,  < | .  > |  OSS |  -  _  |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
  *                        | ???  | GUI  | Esc  |  E   | SYM  |  | SYM  | Space| Tab  | GUI  | ???  |
  *                        |      |      | Alt  |  NAV |      |  |      | NUM  | Ctrl |      |      |
