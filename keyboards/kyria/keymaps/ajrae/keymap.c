@@ -64,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_RSTHD] = MY_HOMEROW_LAYOUT(
         KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_COMM, KC_U,    KC_Q,    KC_PIPE,
 LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_QUOT,
-        KC_SLSH,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_DOT,  KC_SCLN, MY_LSFT, KC_MINS,
+        KC_SLSH,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_DOT,  KC_SCLN, MY_RSFT, KC_MINS,
                         _______, KC_LGUI, MY_LALT,   RST_E, RST_ENT, MY_BSPC, RST_SPC, MY_RCTL, KC_RGUI, _______
     ),
 /*
@@ -193,23 +193,71 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 
 #ifndef MY_SPLIT_RIGHT
 
+/* --------------- PROCESS RECORD --------------- */
+bool SMART_CAPS = false;
+
+void smart_caps_enable(void) {
+    SMART_CAPS = true;
+    register_mods(MOD_LSFT);
+}
+
+void smart_caps_disable(void) {
+    SMART_CAPS = false;
+    unregister_mods(MOD_LSFT);
+}
+
+void smart_caps_toggle(void) {
+    if (SMART_CAPS)
+        smart_caps_disable();
+    else
+        smart_caps_enable();
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
+        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
+        keycode = keycode & 0xFF;
+    }
+    if (keycode >= KC_1 && keycode <= KC_0) {
+        smart_caps_disable();
+    }
+    switch (keycode) {
+        case KC_LPRN:
+        case KC_EQL:
+        case KC_SCLN:
+        case KC_LBRC:
+        case KC_ESC:
+        case KC_ENT:
+        case KC_SPC:
+            if (record->event.pressed) {
+                smart_caps_disable();
+            }
+            return true;  // Skip all further processing of this key
+        default:
+            return true;  // Process all other keycodes normally
+    }
+}
+
 /* --------------- COMBOS --------------- */
 #ifdef COMBO_ENABLE
 enum combo_events {
   PD_COMBO,
   VL_COMBO,
+  SFT_COMBO,
   LEFT_LEAD,
   RIGHT_LEAD,
 };
 
 const uint16_t PROGMEM pd_combo[] = {KC_P, KC_D, COMBO_END};
 const uint16_t PROGMEM vl_combo[] = {KC_V, KC_L, COMBO_END};
+/* const uint16_t PROGMEM sft_combo[] = {MY_LSFT, MY_RSFT, COMBO_END}; */
 /* const uint16_t PROGMEM left_thumb_combo[] = {RST_E, KC_LEAD, COMBO_END}; */
 /* const uint16_t PROGMEM right_thumb_combo[] = {RST_SPC, KC_LEAD, COMBO_END}; */
 
 combo_t key_combos[COMBO_COUNT] = {
   [ PD_COMBO ] = COMBO_ACTION(pd_combo),
   [ VL_COMBO ] = COMBO_ACTION(vl_combo),
+  /* [ SFT_COMBO ] = COMBO_ACTION(sft_combo), */
   /* [ LEFT_LEAD ] = COMBO_ACTION(left_thumb_combo), */
   /* [ RIGHT_LEAD ] = COMBO_ACTION(right_thumb_combo), */
 };
@@ -224,10 +272,14 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             }
             break;
         case RIGHT_LEAD:
+            if (pressed) {
+                qk_leader_start(); // the underlying leader command
+            }
+            break;
+        case SFT_COMBO:
         case VL_COMBO:
             if (pressed) {
-                /* tap_code16(KC_LEAD); */
-                qk_leader_start(); // the underlying leader command
+                smart_caps_toggle(); // toggle smart caps
             }
             break;
     }

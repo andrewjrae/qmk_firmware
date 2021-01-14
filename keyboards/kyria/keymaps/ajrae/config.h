@@ -57,6 +57,7 @@
 
 #define MY_SPC LT(_NAV, KC_SPC)
 #define MY_LSFT OSM(MOD_LSFT)
+#define MY_RSFT OSM(MOD_RSFT)
 #define MY_RCTL MT(MOD_RCTL, KC_TAB)
 #define MY_LALT MT(MOD_LALT, KC_ESC)
 
