@@ -14,6 +14,10 @@ enum layers {
     _LIGHTS
 };
 
+enum custom_keycodes {
+    SMRTCAPS = SAFE_RANGE,
+};
+
 // clang-format off
 #define MY_HOMEROW_LAYOUT( \
     L00, L01, L02, L03, L04, L05,                     R06, R07, R08, R09, R10, R11, \
@@ -47,14 +51,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Alpha Layer: RSTHD - modified for better vim usage and personal comfort
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   V  |   M  | ,  < |   U  |   Q  |  | \   |
+ * |  Tab   |   Z  |   W  |   Y  |   F  |   P  |                              |   V  |   M  | '  " |   U  |   Q  |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |  /  ?  |   R  |   S  |   T  |   H  |   D  |                              |   L  |   N  |   A  |   I  |   O  |  ' "   |
+ * |  /  ?  |   R  |   S  |   T  |   H  |   D  |                              |   L  |   N  |   A  |   I  |   O  |  ; :   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |  /  ?  |  OSS |   W  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | .  > | ;  : |  OSS |  -  _  |
+ * |  CAPS  |  OSS |   C  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | ,  < | .  > |  OSS |  -  _  |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
- *                        | ???  | GUI  | Esc  |  E   | SYM  |  | NUM  | Space| Tab  | GUI  | ???  |
- *                        |      |      | Alt  |      |      |  |      | NAV  | Ctrl |      |      |
+ *                        | ???  | GUI  | Esc  |  E   | SYM  |  | SYM  | Space| Tab  | GUI  | ???  |
+ *                        |      |      | Alt  |  NAV |      |  |      | NUM  | Ctrl |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
  #define RST_E LT(_NAV, KC_E)
@@ -62,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  #define RST_ENT LT(_SYM, KC_ENT)
 
     [_RSTHD] = MY_HOMEROW_LAYOUT(
-        KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_COMM, KC_U,    KC_Q,    KC_PIPE,
-LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_QUOT,
-        KC_SLSH,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_DOT,  KC_SCLN, MY_RSFT, KC_MINS,
+        KC_TAB,   KC_Z,    KC_W, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_QUOT, KC_U,    KC_Q,    KC_PIPE,
+LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_SCLN,
+       SMRTCAPS,  MY_LSFT, KC_C, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_COMM, KC_DOT,  MY_RSFT, KC_MINS,
                         _______, KC_LGUI, MY_LALT,   RST_E, RST_ENT, MY_BSPC, RST_SPC, MY_RCTL, KC_RGUI, _______
     ),
 /*
@@ -218,14 +222,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
         keycode = keycode & 0xFF;
     }
-    if (keycode >= KC_1 && keycode <= KC_0) {
+
+    // Special cases to catch out side of the switch statement
+    if ((get_mods() & MOD_LCTL && keycode == KC_S) || (keycode >= KC_1 && keycode <= KC_0)) {
         smart_caps_disable();
+        return true;
     }
+
     switch (keycode) {
+        case SMRTCAPS:
+            if (record->event.pressed) {
+                smart_caps_toggle();
+            }
+            return false;
         case KC_LPRN:
         case KC_EQL:
         case KC_SCLN:
         case KC_LBRC:
+        case KC_TAB:
         case KC_ESC:
         case KC_ENT:
         case KC_SPC:
