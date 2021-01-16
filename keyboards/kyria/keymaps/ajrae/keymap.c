@@ -198,55 +198,53 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 #ifndef MY_SPLIT_RIGHT
 
 /* --------------- PROCESS RECORD --------------- */
-bool SMART_CAPS = false;
+bool smart_caps_on = false;
 
 void smart_caps_enable(void) {
-    SMART_CAPS = true;
+    smart_caps_on = true;
     register_mods(MOD_LSFT);
 }
 
 void smart_caps_disable(void) {
-    SMART_CAPS = false;
+    smart_caps_on = false;
     unregister_mods(MOD_LSFT);
 }
 
-void smart_caps_toggle(void) {
-    if (SMART_CAPS)
-        smart_caps_disable();
-    else
-        smart_caps_enable();
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
-        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
-        keycode = keycode & 0xFF;
-    }
+    // update smart caps state on keypresses
+    if (smart_caps_on && record->event.pressed) {
+        // Only bother checking the keycodes if no other mod's are up
+        if (get_mods() == MOD_LSFT) {
+            if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
+                keycode = keycode & 0xFF;
+            }
 
-    // Special cases to catch out side of the switch statement
-    if ((get_mods() & MOD_LCTL && keycode == KC_S) || (keycode >= KC_1 && keycode <= KC_0)) {
+            // Just return if it's an alpha or any of the other
+            if (keycode >= KC_A && keycode <= KC_Z)
+                return true;
+
+            // Catch any other non-breaking keycodes (ie keycodes that won't disable smart caps)
+            switch (keycode) {
+                case KC_BSPC:
+                case KC_UNDS:
+                case KC_MINS:
+                    return true;
+                default:
+                    break;
+            }
+        }
+
+        // If we didn't return earlier, disable smart caps
         smart_caps_disable();
-        return true;
     }
 
+    // Regular user keycode case statement
     switch (keycode) {
         case SMRTCAPS:
             if (record->event.pressed) {
-                smart_caps_toggle();
+                smart_caps_enable();
             }
             return false;
-        case KC_LPRN:
-        case KC_EQL:
-        case KC_SCLN:
-        case KC_LBRC:
-        case KC_TAB:
-        case KC_ESC:
-        case KC_ENT:
-        case KC_SPC:
-            if (record->event.pressed) {
-                smart_caps_disable();
-            }
-            return true;  // Skip all further processing of this key
         default:
             return true;  // Process all other keycodes normally
     }
@@ -293,7 +291,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case SFT_COMBO:
         case VL_COMBO:
             if (pressed) {
-                smart_caps_toggle(); // toggle smart caps
+                smart_caps_enable(); // toggle smart caps
             }
             break;
     }
