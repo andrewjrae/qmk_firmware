@@ -198,7 +198,7 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 #ifndef MY_SPLIT_RIGHT
 
 /* --------------- PROCESS RECORD --------------- */
-bool smart_caps_on = false;
+static bool smart_caps_on = false;
 
 void smart_caps_enable(void) {
     smart_caps_on = true;
@@ -210,33 +210,44 @@ void smart_caps_disable(void) {
     unregister_mods(MOD_LSFT);
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+void smart_caps_process_record(uint16_t keycode, const keyrecord_t *record) {
     // update smart caps state on keypresses
+    static bool disable_smart_caps;
     if (smart_caps_on && record->event.pressed) {
+        disable_smart_caps = true;
         // Only bother checking the keycodes if no other mod's are up
         if (get_mods() == MOD_LSFT) {
+            // Get the base keycode of a mod or layer tap key
             if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
                 keycode = keycode & 0xFF;
             }
 
             // Just return if it's an alpha or any of the other
-            if (keycode >= KC_A && keycode <= KC_Z)
-                return true;
+            if (keycode >= KC_A && keycode <= KC_Z) {
+                disable_smart_caps = false;
+            }
 
             // Catch any other non-breaking keycodes (ie keycodes that won't disable smart caps)
             switch (keycode) {
                 case KC_BSPC:
                 case KC_UNDS:
                 case KC_MINS:
-                    return true;
+                    disable_smart_caps = false;
+                    break;
                 default:
                     break;
             }
         }
 
-        // If we didn't return earlier, disable smart caps
-        smart_caps_disable();
+        if (disable_smart_caps) {
+            smart_caps_disable();
+        }
     }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // Process smart caps for updates
+    smart_caps_process_record(keycode, record);
 
     // Regular user keycode case statement
     switch (keycode) {
