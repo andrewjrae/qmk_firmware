@@ -210,44 +210,40 @@ void smart_caps_disable(void) {
     unregister_mods(MOD_LSFT);
 }
 
-void smart_caps_process_record(uint16_t keycode, const keyrecord_t *record) {
-    // update smart caps state on keypresses
-    static bool disable_smart_caps;
+void smart_caps_check_disable(uint16_t keycode, const keyrecord_t *record) {
+    // Update smart caps state on keypresses
     if (smart_caps_on && record->event.pressed) {
-        disable_smart_caps = true;
-        // Only bother checking the keycodes if no other mod's are up
-        if (get_mods() == MOD_LSFT) {
-            // Get the base keycode of a mod or layer tap key
-            if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
+        // Get the base keycode of a mod or layer tap key
+        switch (keycode) {
+            case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+            case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+                // Earlier return if this has not been considered tapped yet
+                if (record->tap.count == 0)
+                    return;
                 keycode = keycode & 0xFF;
-            }
-
-            // Just return if it's an alpha or any of the other
-            if (keycode >= KC_A && keycode <= KC_Z) {
-                disable_smart_caps = false;
-            }
-
-            // Catch any other non-breaking keycodes (ie keycodes that won't disable smart caps)
-            switch (keycode) {
-                case KC_BSPC:
-                case KC_UNDS:
-                case KC_MINS:
-                    disable_smart_caps = false;
-                    break;
-                default:
-                    break;
-            }
+                break;
+            default:
+                break;
         }
 
-        if (disable_smart_caps) {
-            smart_caps_disable();
+        // Catch any other non-breaking keycodes (ie keycodes that won't disable smart caps)
+        switch (keycode) {
+            case KC_A ... KC_Z:
+            case KC_BSPC:
+            case KC_UNDS:
+            case KC_MINS:
+                break;
+            default:
+                if (get_mods() == MOD_LSFT)
+                    smart_caps_disable();
+                break;
         }
     }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Process smart caps for updates
-    smart_caps_process_record(keycode, record);
+    smart_caps_check_disable(keycode, record);
 
     // Regular user keycode case statement
     switch (keycode) {
