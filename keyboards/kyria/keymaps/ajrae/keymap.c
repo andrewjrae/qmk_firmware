@@ -15,7 +15,7 @@ enum layers {
 };
 
 enum custom_keycodes {
-    SMRTCAPS = SAFE_RANGE,
+    CAPSWRD = SAFE_RANGE,
 };
 
 // clang-format off
@@ -198,20 +198,20 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
 #ifndef MY_SPLIT_RIGHT
 
 /* --------------- PROCESS RECORD --------------- */
-static bool smart_caps_on = false;
+static bool caps_word_on = false;
 
-void smart_caps_enable(void) {
-    smart_caps_on = true;
+void caps_word_enable(void) {
+    caps_word_on = true;
 }
 
-void smart_caps_disable(void) {
-    smart_caps_on = false;
+void caps_word_disable(void) {
+    caps_word_on = false;
     unregister_mods(MOD_LSFT);
 }
 
-void smart_caps_process_user(uint16_t keycode, const keyrecord_t *record) {
-    // Update smart caps state
-    if (smart_caps_on) {
+void caps_word_process_user(uint16_t keycode, const keyrecord_t *record) {
+    // Update caps word state
+    if (caps_word_on) {
         // Get the base keycode of a mod or layer tap key
         switch (keycode) {
             case QK_MOD_TAP ... QK_MOD_TAP_MAX:
@@ -233,31 +233,31 @@ void smart_caps_process_user(uint16_t keycode, const keyrecord_t *record) {
                     register_mods(MOD_LSFT);
                 else
                     unregister_mods(MOD_LSFT);
-            // Keycodes to ignore (don't disable smart caps), but not to shift
+            // Keycodes to ignore (don't disable caps word), but not to shift
             case KC_BSPC:
             case KC_UNDS:
                 // If mod chording disable the mods
                 if (record->event.pressed && (get_mods() != MOD_LSFT) && (get_mods() != 0)) {
-                    smart_caps_disable();
+                    caps_word_disable();
                 }
                 break;
             default:
                 if (record->event.pressed)
-                    smart_caps_disable();
+                    caps_word_disable();
                 break;
         }
     }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // Process smart caps for updates
-    smart_caps_process_user(keycode, record);
+    // Process caps word for updates
+    caps_word_process_user(keycode, record);
 
     // Regular user keycode case statement
     switch (keycode) {
-        case SMRTCAPS:
+        case CAPSWRD:
             if (record->event.pressed) {
-                smart_caps_enable();
+                caps_word_enable();
             }
             return false;
         default:
@@ -306,7 +306,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case SFT_COMBO:
         case VL_COMBO:
             if (pressed) {
-                smart_caps_enable(); // toggle smart caps
+                caps_word_enable(); // toggle caps word
             }
             break;
     }
