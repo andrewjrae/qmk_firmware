@@ -262,6 +262,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 caps_word_enable();
             }
             return false;
+        case KC_MINS:
+            // Turn the cheeky corner minus sign into an underscore when using caps word
+            if (caps_word_on && record->event.pressed && record->event.key.col == MATRIX_COLS-1) {
+                tap_code16(KC_UNDS);
+                return false;
+            }
+            return true;
         default:
             return true;  // Process all other keycodes normally
     }
