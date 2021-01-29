@@ -233,11 +233,10 @@ void caps_word_process_user(uint16_t keycode, const keyrecord_t *record) {
                 else if (!record->tap.interrupted)
                     unregister_mods(MOD_LSFT);
             // Keycodes to ignore (don't disable caps word), but not to shift
-            case OSM(MOD_LSFT):
-            case OSM(MOD_RSFT):
             case KC_MINS:
             case KC_BSPC:
             case KC_UNDS:
+            case CAPSWRD:
                 // If mod chording disable the mods
                 if (record->event.pressed && (get_mods() != MOD_LSFT) && (get_mods() != 0)) {
                     caps_word_disable();
