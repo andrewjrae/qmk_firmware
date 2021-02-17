@@ -11,6 +11,7 @@ enum layers {
     _NAV,
     _NUM,
     _SYM,
+    _FUN,
     _LIGHTS
 };
 
@@ -27,7 +28,8 @@ enum custom_keycodes {
     ) \
     LAYOUT( \
         L00, L01, L02, L03, L04, L05,                     R06, R07, R08, R09, R10, R11, \
-        L12, MT(MOD_LALT, L13), MT(MOD_LGUI, L14), MT(MOD_LCTL, L15), MT(MOD_LSFT, L16), L17,                     R18, MT(MOD_LSFT, R19), MT(MOD_LCTL, R20), MT(MOD_LGUI, R21), MT(MOD_LALT, R22), R23, \
+        L12, LALT_T(L13), LGUI_T(L14), LCTL_T(L15), LSFT_T(L16), L17,   \
+        R18, LSFT_T(R19), LCTL_T(R20), LGUI_T(R21), LALT_T(R22), R23,   \
         L24, L25, L26, L27, L28, L29, L30, L31, R32, R33, R34, R35, R36, R37, R38, R39, \
                     L40, L41, L42, L43, L44, R45, R46, R47, R48, R49 \
     )
@@ -51,25 +53,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Alpha Layer: RSTHD - modified for better vim usage and personal comfort
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   V  |   M  | '  " |   U  |   Q  |  | \   |
+ * |  Tab   |   Z  |   C  |   Y  |   F  |   P  |                              |   X  |   M  | '  " |   U  |   Q  |  | \   |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |  /  ?  |   R  |   S  |   T  |   H  |   D  |                              |   L  |   N  |   A  |   I  |   O  |  ; :   |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |  CAPS  |  OSS |   W  |   G  |   K  |   B  |Leader|      |  |      |Leader|   X  |   J  | ,  < | .  > |  OSS |  -  _  |
+ * |  CAPS  |  OSS |   V  |   G  |   K  |   B  |Leader|      |  |      |Leader|   W  |   J  | ,  < | .  > |  OSS |  -  _  |
  * `----------------------+------+------+------+------+ Enter|  | Bksp +------+------+------+------+----------------------'
- *                        | ???  | GUI  | Esc  |  E   | SYM  |  | SYM  | Space| Tab  | GUI  | ???  |
- *                        |      |      | Alt  |  NAV |      |  |      | NUM  | Ctrl |      |      |
+ *                        | ???  | GUI  | Esc  | Space| SYM  |  | SYM  |  E   | Tab  | GUI  | ???  |
+ *                        |      |      |      |  NAV |      |  |      | NUM  | FUN  |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
- #define RST_E LT(_NAV, KC_E)
- #define RST_SPC LT(_NUM, KC_SPC)
- #define RST_ENT LT(_SYM, KC_ENT)
-
+#define RST_E LT(_NUM, KC_E)
+#define RST_SPC LT(_NAV, KC_SPC)
+#define RST_ENT LT(_SYM, KC_ENT)
+#define RST_TAB LT(_FUN, KC_TAB)
     [_RSTHD] = MY_HOMEROW_LAYOUT(
-        KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_V, KC_M, KC_QUOT, KC_U,    KC_Q,    KC_PIPE,
+        KC_TAB,   KC_Z,    KC_C, KC_Y, KC_F, KC_P,                                     KC_X, KC_M, KC_QUOT, KC_U,    KC_Q,    KC_PIPE,
 LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                                     KC_L, KC_N, KC_A,    KC_I,    KC_O,    KC_SCLN,
-       SMRTCAPS,  MY_LSFT, KC_W, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_X, KC_J, KC_COMM, KC_DOT,  MY_RSFT, KC_MINS,
-                        _______, KC_LGUI, MY_LALT,   RST_E, RST_ENT, MY_BSPC, RST_SPC, MY_RCTL, KC_RGUI, _______
+       CAPSWRD,  MY_LSFT, KC_V, KC_G, KC_K, KC_B, KC_LEAD, _______, _______, KC_LEAD, KC_W, KC_J, KC_COMM, KC_DOT,  MY_RSFT, KC_MINS,
+        _______, KC_LGUI, KC_ESC, RST_SPC, RST_ENT, MY_BSPC, RST_E, RST_TAB, KC_RGUI, _______
     ),
 /*
  * Alpha Layer: ATHEX a modified THE-1 for better vim usage and personal comfort
@@ -135,21 +137,21 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
  * Number Layer: Numbers and function keys
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |  F1  | F2   | F3   | F4   | F5   |                              | F6   | F7   | F8   | F9   | F10  |        |
+ * |        |      |  7   |  8   |  9   |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
+ * |  /     |  1   |  2   |  3   |  0   |      |                              |  ^   |  =   |  +   |  -   |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | F11  |      |      |      |  |      |      |      | F12  |      |      |      |        |
+ * |        |  *   |  4   |  5   |  6   |      |      |      |  |      |      |      |  <   |  >   |  .   |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NUM] = MY_HOMEROW_LAYOUT(
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-      _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
-      _______, _______, _______, _______, KC_F11,  _______, _______, _______, _______, _______, _______, KC_F12,  _______, _______, _______, _______,
-                                 _______, _______, _______, KC_SPC,  _______, _______, _______, _______, _______, _______
+      _______, _______, KC_7,    KC_8,    KC_9,    _______,                                     _______, _______, _______, _______, _______, _______,
+      KC_SLSH, KC_1,    KC_2,    KC_3,    KC_0,    _______,                                     KC_CIRC, KC_EQL,  KC_PLUS, KC_MINS, _______, _______,
+      _______, KC_ASTR, KC_4,    KC_5,    KC_6,    _______, _______, _______, _______, _______, _______, KC_LABK, KC_RABK, _______, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Nav Layer: Navigation keys, copy paste, and media keys
@@ -172,7 +174,26 @@ LT(_NAV,KC_SLSH), KC_R,    KC_S, KC_T, KC_H, KC_D,                              
       _______, _______, KC_MPRV, KC_MUTE, KC_VOLD, _______, _______, _______, _______, _______, VI_B,    KC_PGDN, KC_PGUP, VI_W,    _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
-
+/*
+ * Function Layer
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |      |  F7  |  F8  |  F9  |      |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        |  F1  |  F2  |  F3  |  F10 | F11  |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |      |  F4  |  F5  |  F6  | F12  |      |      |  |      |      |      |      |      |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_FUN] = LAYOUT(
+      _______, _______, KC_F7,   KC_F8,   KC_F9,   _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, KC_F1,   KC_F2,   KC_F3,   KC_F10,  KC_F11,                                      _______, KC_LSFT, KC_LCTL, KC_LGUI, KC_LALT, _______,
+      _______, _______, KC_F4,   KC_F5,   KC_F6,   KC_F12,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
 // /*
 //  * Layer template
 //  *
@@ -265,6 +286,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // Turn the cheeky corner minus sign into an underscore when using caps word
             if (caps_word_on && record->event.pressed && record->event.key.col == MATRIX_COLS-1) {
                 tap_code16(KC_UNDS);
+                return false;
+            }
+            return true;
+        case LCTL_T(KC_PLUS):
+            if (record->event.pressed && record->tap.count > 0) {
+                tap_code16(KC_PLUS);
+                return false;
+            }
+            return true;
+        case LGUI_T(KC_RABK):
+            if (record->event.pressed && record->tap.count > 0) {
+                tap_code16(KC_RABK);
                 return false;
             }
             return true;
@@ -377,7 +410,7 @@ void matrix_scan_user(void) {
     if (leader_sequence[0])
     // Switch to ATHEX
     SEQ_TWO_KEYS(KC_L, KC_A) {
-        layer_on(_ATHEX);
+        layer_move(_ATHEX);
         leading = false;
     }
     // Switch to RSTHD
@@ -448,7 +481,7 @@ static void render_status(void) {
             oled_write_P(PSTR("ATHEX\n\n"), false);
             break;
         case _RSTHD:
-            oled_write_P(PSTR("RSTHD\n\n"), false);
+            oled_write_P(PSTR("RSTHD v4\n\n"), false);
             break;
         case _QWERTY:
             oled_write_P(PSTR("QWERTY\n\n"), false);
