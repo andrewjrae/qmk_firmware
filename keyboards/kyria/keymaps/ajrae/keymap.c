@@ -254,6 +254,7 @@ void caps_word_process_user(uint16_t keycode, const keyrecord_t *record) {
                 else if (!record->tap.interrupted)
                     unregister_mods(MOD_LSFT);
             // Keycodes to ignore (don't disable caps word), but not to shift
+            case KC_1 ... KC_0:
             case KC_MINS:
             case KC_BSPC:
             case KC_UNDS:
